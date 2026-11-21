@@ -250,7 +250,12 @@ export function advanceTurn(state: GameState): { state: GameState; summary: Turn
     gameOver = true
     messages.push({ severity: 'peligro', text: failure.message })
   } else if (draft.turn >= totalMonths(draft)) {
-    const outcome = buildFinalEvaluation(draft, `Se completaron los ${draft.config.durationYears} años de la partida.`, false)
+    const years = draft.config.durationYears
+    const outcome = buildFinalEvaluation(
+      draft,
+      years === 1 ? 'Se completó el año de la partida.' : `Se completaron los ${years} años de la partida.`,
+      false,
+    )
     draft.outcome = outcome
     draft.status = outcome.victory ? 'victoria' : 'finalizado'
     gameOver = true
