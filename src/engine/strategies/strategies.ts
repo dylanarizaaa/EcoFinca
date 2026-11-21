@@ -35,7 +35,7 @@ export const STRATEGIES: Record<StrategyId, StrategyInfo> = {
     name: 'Producción convencional',
     description: 'Maximiza la producción inmediata con insumos de síntesis.',
     practices: [
-      'Fertilizante químico en dosis alta cada 3 meses',
+      'Fertilizante químico en dosis alta cada 4 meses',
       'Control químico ante cualquier foco de plagas',
       'Riego por gravedad cuando el suelo se seca',
       'Sin coberturas, barreras ni conservación',

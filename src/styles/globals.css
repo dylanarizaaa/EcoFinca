@@ -1,0 +1,222 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/*
+ * Sistema de diseño EcoFinca
+ * Paleta inspirada en el paisaje cafetero colombiano.
+ */
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Nunito Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Verde bosque / natural / claro */
+  --color-forest-50: #f1f6f1;
+  --color-forest-100: #dceadc;
+  --color-forest-200: #bcd6bd;
+  --color-forest-300: #92ba96;
+  --color-forest-400: #6a9c70;
+  --color-forest-500: #4e8055;
+  --color-forest-600: #3c6845;
+  --color-forest-700: #2f553a;
+  --color-forest-800: #234d35;
+  --color-forest-900: #1a3826;
+  --color-forest-950: #0e2016;
+
+  --color-leaf-100: #eef4e5;
+  --color-leaf-200: #d6e6c3;
+  --color-leaf-300: #a8c58b;
+  --color-leaf-400: #8fb26f;
+  --color-leaf-500: #739955;
+
+  /* Beige tierra y café */
+  --color-sand-50: #fbf8f1;
+  --color-sand-100: #f4eedf;
+  --color-sand-200: #e9dfc9;
+  --color-sand-300: #d9c9a6;
+  --color-sand-400: #c4ad80;
+
+  --color-earth-300: #c09a74;
+  --color-earth-400: #a17853;
+  --color-earth-500: #79563a;
+  --color-earth-600: #5f432d;
+  --color-earth-700: #463121;
+
+  /* Azul agua */
+  --color-water-50: #eef6fa;
+  --color-water-100: #d6e9f2;
+  --color-water-200: #aed2e4;
+  --color-water-300: #7fb5d1;
+  --color-water-400: #4c91b5;
+  --color-water-500: #3a7899;
+  --color-water-600: #2d5f7a;
+
+  --color-sun-300: #f6d27a;
+  --color-sun-400: #eeb84a;
+  --color-sun-500: #d99a24;
+
+  --color-clay-400: #d0745a;
+  --color-clay-500: #b4432f;
+  --color-clay-600: #93331f;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-flow: flow 3s linear infinite;
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-sway: sway 5s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -40;
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+  @keyframes sway {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(14px);
+    }
+  }
+}
+
+:root {
+  --radius: 0.85rem;
+  --background: #f7f8f4;
+  --foreground: #1c2a21;
+  --card: #ffffff;
+  --card-foreground: #1c2a21;
+  --popover: #ffffff;
+  --popover-foreground: #1c2a21;
+  --primary: #234d35;
+  --primary-foreground: #f7f8f4;
+  --secondary: #e9dfc9;
+  --secondary-foreground: #463121;
+  --muted: #eef0e8;
+  --muted-foreground: #5c685f;
+  --accent: #e3eedb;
+  --accent-foreground: #1a3826;
+  --destructive: #b4432f;
+  --destructive-foreground: #ffffff;
+  --success: #3c6845;
+  --warning: #d99a24;
+  --info: #3a7899;
+  --border: #dde2d4;
+  --input: #d3d9c8;
+  --ring: #4e8055;
+  --chart-1: #234d35;
+  --chart-2: #4c91b5;
+  --chart-3: #d99a24;
+  --chart-4: #79563a;
+  --chart-5: #8fb26f;
+  --chart-6: #b4432f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+  ::selection {
+    background: #a8c58b80;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
+
+@layer components {
+  .surface {
+    @apply rounded-xl border border-border/80 bg-card shadow-[0_1px_2px_rgba(28,42,33,0.04),0_8px_24px_-16px_rgba(28,42,33,0.18)];
+  }
+  .surface-muted {
+    @apply rounded-xl border border-border/60 bg-muted/60;
+  }
+  .paper-texture {
+    background-image:
+      radial-gradient(circle at 20% 10%, rgb(168 197 139 / 0.12), transparent 40%),
+      radial-gradient(circle at 80% 0%, rgb(76 145 181 / 0.08), transparent 35%),
+      radial-gradient(circle at 50% 100%, rgb(233 223 201 / 0.5), transparent 50%);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
