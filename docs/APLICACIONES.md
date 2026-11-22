@@ -86,7 +86,7 @@ Para que GitHub Actions firme el APK, crea estos secretos en *Settings → Secre
 
 El flujo `.github/workflows/aplicaciones.yml` compila Windows, macOS, Linux y Android:
 
-- **Manual:** pestaña *Actions* → *Aplicaciones EcoFinca* → *Run workflow*. Los instaladores quedan como *artifacts* de la ejecución.
+- **Manual:** pestaña *Actions* → *Aplicaciones EcoFinca* → *Run workflow*. Puedes elegir compilar *todas* las plataformas, solo *escritorio* o solo *android*. Los instaladores quedan como *artifacts* de la ejecución.
 - **Versión publicada:** al crear una etiqueta `vX.Y.Z` (por ejemplo `git tag v1.0.0 && git push origin v1.0.0`) se genera un borrador de *Release* con todos los instaladores.
 
 ## Instalación

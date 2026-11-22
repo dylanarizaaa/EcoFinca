@@ -12,6 +12,12 @@ name: Aplicaciones EcoFinca
 
 on:
   workflow_dispatch:
+    inputs:
+      plataformas:
+        description: 'Plataformas a compilar'
+        type: choice
+        options: [todas, escritorio, android]
+        default: todas
   push:
     tags: ['v*']
 
@@ -25,6 +31,7 @@ concurrency:
 jobs:
   escritorio:
     name: Escritorio (${{ matrix.name }})
+    if: github.event_name != 'workflow_dispatch' || inputs.plataformas != 'android'
     strategy:
       fail-fast: false
       matrix:
@@ -89,6 +96,7 @@ jobs:
 
   android:
     name: Android (APK)
+    if: github.event_name != 'workflow_dispatch' || inputs.plataformas != 'escritorio'
     runs-on: ubuntu-latest
     env:
       NDK_VERSION: 29.0.14206865
@@ -105,10 +113,11 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      # Se listan los paquetes explícitamente: el valor por defecto de la acción incluye
+      # el paquete «tools», que Google retiró del SDK y hace fallar a sdkmanager.
       - uses: android-actions/setup-android@v3
-
-      - name: NDK
-        run: sdkmanager "ndk;${NDK_VERSION}"
+        with:
+          packages: platform-tools platforms;android-36 build-tools;36.0.0 ndk;${{ env.NDK_VERSION }}
 
       - uses: dtolnay/rust-toolchain@stable
         with:
