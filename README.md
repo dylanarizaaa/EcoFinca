@@ -69,6 +69,18 @@ npm test             # ejecuta todas las pruebas (Vitest)
 npm run test:watch   # pruebas en modo observador
 ```
 
+## Aplicaciones de escritorio y móvil
+
+EcoFinca también se distribuye como programa instalable gracias a **Tauri 2**: Windows (`.exe`/`.msi`), macOS (`.dmg`), Linux (`.deb`, `.rpm`, `.AppImage`), Android (`.apk`) e iOS (desde Xcode). Funciona sin conexión y guarda las partidas en el dispositivo.
+
+```bash
+npm run desktop:dev      # app de escritorio en modo desarrollo
+npm run desktop:build    # instaladores del sistema actual
+npm run android:build    # APK de Android (requiere SDK/NDK y firma)
+```
+
+El flujo de GitHub Actions `.github/workflows/aplicaciones.yml` compila todas las plataformas de escritorio y Android. Requisitos, firma e instalación: [docs/APLICACIONES.md](docs/APLICACIONES.md).
+
 ## Arquitectura
 
 ```
@@ -132,3 +144,4 @@ Todos los coeficientes están centralizados en [`src/engine/config/model.ts`](sr
 - [docs/ENVIRONMENTAL-MODEL.md](docs/ENVIRONMENTAL-MODEL.md) — variables ambientales e interconexiones
 - [docs/USER-GUIDE.md](docs/USER-GUIDE.md) — guía del jugador
 - [docs/TESTING.md](docs/TESTING.md) — estrategia y cobertura de pruebas
+- [docs/APLICACIONES.md](docs/APLICACIONES.md) — aplicaciones de escritorio y móvil con Tauri

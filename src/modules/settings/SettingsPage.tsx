@@ -92,7 +92,7 @@ export function SettingsPage() {
             <CardTitle>Preferencias</CardTitle>
           </CardHeader>
           <CardContent className="divide-y divide-border">
-            <ToggleRow id="autosave" label="Guardado automático" description="Guarda la partida en este navegador después de cada acción y cada mes." checked={settings.autosave} onChange={(v) => void update({ autosave: v })} />
+            <ToggleRow id="autosave" label="Guardado automático" description="Guarda la partida en este dispositivo después de cada acción y cada mes." checked={settings.autosave} onChange={(v) => void update({ autosave: v })} />
             <ToggleRow id="tutorial" label="Mostrar tutorial en partidas nuevas" description="Guía paso a paso al iniciar una finca." checked={settings.showTutorial} onChange={(v) => void update({ showTutorial: v })} />
             <ToggleRow id="tooltips" label="Tooltips explicativos" description="Muestra explicaciones al pasar el cursor sobre indicadores y acciones." checked={settings.showTooltips} onChange={(v) => void update({ showTooltips: v })} />
             <ToggleRow id="motion" label="Reducir animaciones" description="Desactiva transiciones y animaciones decorativas." checked={settings.reduceMotion} onChange={(v) => void update({ reduceMotion: v })} />
@@ -177,7 +177,7 @@ export function SettingsPage() {
               <Database className="size-4" /> Datos guardados
             </CardTitle>
             <CardDescription>
-              Las partidas se guardan localmente en IndexedDB (este navegador). Hay {games.length} partida(s) guardada(s).
+              Las partidas se guardan localmente en este dispositivo (IndexedDB). Hay {games.length} partida(s) guardada(s).
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -188,7 +188,7 @@ export function SettingsPage() {
                 </Button>
               }
               title="¿Eliminar todas las partidas?"
-              description="Se borrarán todas las partidas guardadas en este navegador. Esta acción no se puede deshacer."
+              description="Se borrarán todas las partidas guardadas en este dispositivo. Esta acción no se puede deshacer."
               confirmLabel="Eliminar todo"
               destructive
               onConfirm={() => {

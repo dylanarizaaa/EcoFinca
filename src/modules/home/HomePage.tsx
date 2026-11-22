@@ -106,7 +106,7 @@ export function HomePage() {
           <h2 id="saved-title" className="font-display text-2xl font-extrabold text-forest-900">
             Partidas guardadas
           </h2>
-          <p className="text-sm text-muted-foreground">Se guardan automáticamente en este navegador (IndexedDB).</p>
+          <p className="text-sm text-muted-foreground">Se guardan automáticamente en este dispositivo.</p>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             {loading &&
               Array.from({ length: 2 }, (_, i) => <Skeleton key={i} className="h-28" />)}
@@ -157,7 +157,7 @@ export function HomePage() {
                         </Button>
                       }
                       title="¿Eliminar esta partida?"
-                      description={`Se borrará «${g.farmName}» y todo su historial de este navegador. Esta acción no se puede deshacer.`}
+                      description={`Se borrará «${g.farmName}» y todo su historial de este dispositivo. Esta acción no se puede deshacer.`}
                       confirmLabel="Eliminar"
                       destructive
                       onConfirm={() =>

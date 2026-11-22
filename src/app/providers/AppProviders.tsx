@@ -14,6 +14,8 @@ export function AppProviders({ children }: { children: ReactNode }) {
       {children}
       <Toaster
         position="top-center"
+        offset={{ top: 'calc(16px + var(--safe-top))' }}
+        mobileOffset={{ top: 'calc(12px + var(--safe-top))' }}
         richColors
         closeButton
         toastOptions={{ classNames: { toast: 'font-sans rounded-xl', title: 'font-semibold' } }}

@@ -147,7 +147,7 @@ export function GameLayout() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <div ref={headerRef} className="sticky top-0 z-30">
+      <div ref={headerRef} className="sticky top-[var(--safe-top)] z-30">
         <TopBar
           game={game}
           saving={saving}

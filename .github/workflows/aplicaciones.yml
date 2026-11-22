@@ -1,0 +1,167 @@
+# Compila EcoFinca como aplicación de escritorio (Windows, macOS, Linux) y Android con Tauri.
+#
+# - Ejecución manual: pestaña «Actions» → «Aplicaciones EcoFinca» → «Run workflow».
+#   Los instaladores quedan como artefactos descargables de la ejecución.
+# - Al publicar una etiqueta vX.Y.Z se crea además un borrador de Release con los instaladores.
+#
+# Firma de Android (opcional): si existen los secretos ANDROID_KEY_BASE64, ANDROID_KEY_ALIAS y
+# ANDROID_KEY_PASSWORD se genera un APK de producción firmado; si no, un APK de depuración
+# (instalable para pruebas). Ver docs/APLICACIONES.md.
+
+name: Aplicaciones EcoFinca
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aplicaciones-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  escritorio:
+    name: Escritorio (${{ matrix.name }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux
+            platform: ubuntu-22.04
+            args: ''
+          - name: Windows
+            platform: windows-latest
+            args: ''
+          - name: macOS
+            platform: macos-latest
+            args: '--target universal-apple-darwin'
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.name == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Dependencias de sistema (Linux)
+        if: matrix.name == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - run: npm ci
+
+      - run: npm test
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
+          releaseName: 'EcoFinca ${{ github.ref_name }}'
+          releaseBody: 'Instaladores de EcoFinca para Windows, macOS, Linux y Android.'
+          releaseDraft: true
+          args: ${{ matrix.args }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EcoFinca-${{ matrix.name }}
+          if-no-files-found: error
+          path: |
+            src-tauri/target/**/release/bundle/deb/*.deb
+            src-tauri/target/**/release/bundle/rpm/*.rpm
+            src-tauri/target/**/release/bundle/appimage/*.AppImage
+            src-tauri/target/**/release/bundle/msi/*.msi
+            src-tauri/target/**/release/bundle/nsis/*.exe
+            src-tauri/target/**/release/bundle/dmg/*.dmg
+
+  android:
+    name: Android (APK)
+    runs-on: ubuntu-latest
+    env:
+      NDK_VERSION: 29.0.14206865
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+
+      - name: NDK
+        run: sdkmanager "ndk;${NDK_VERSION}"
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - run: npm ci
+
+      - name: Configurar firma (si hay secretos)
+        id: firma
+        env:
+          ANDROID_KEY_BASE64: ${{ secrets.ANDROID_KEY_BASE64 }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$ANDROID_KEY_BASE64" ]; then
+            echo "$ANDROID_KEY_BASE64" | base64 --decode > "$RUNNER_TEMP/ecofinca.jks"
+            {
+              echo "storeFile=$RUNNER_TEMP/ecofinca.jks"
+              echo "keyAlias=$ANDROID_KEY_ALIAS"
+              echo "password=$ANDROID_KEY_PASSWORD"
+            } > src-tauri/gen/android/keystore.properties
+            echo "modo=release" >> "$GITHUB_OUTPUT"
+          else
+            echo "modo=debug" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Compilar APK
+        env:
+          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/${{ env.NDK_VERSION }}
+        run: |
+          if [ "${{ steps.firma.outputs.modo }}" = "release" ]; then
+            npm run tauri -- android build --apk
+          else
+            npm run tauri -- android build --apk --debug
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EcoFinca-Android
+          if-no-files-found: error
+          path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+
+      - name: Adjuntar APK al Release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in 1 2 3 4 5 6; do
+            gh release view "${{ github.ref_name }}" >/dev/null 2>&1 && break
+            sleep 30
+          done
+          gh release upload "${{ github.ref_name }}" src-tauri/gen/android/app/build/outputs/apk/**/*.apk --clobber
