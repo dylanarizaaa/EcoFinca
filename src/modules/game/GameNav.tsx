@@ -17,7 +17,7 @@ const ITEMS = [
 export function GameNav({ game }: { game: GameState }) {
   const pending = pendingEvents(game).length
   return (
-    <nav className="sticky top-[var(--topbar-h,3.75rem)] z-20 border-b border-border bg-card/95 backdrop-blur" aria-label="Secciones del juego">
+    <nav className="sticky top-[calc(var(--topbar-h,3.75rem)+var(--safe-top))] z-20 border-b border-border bg-card/95 backdrop-blur" aria-label="Secciones del juego">
       <ul className="mx-auto flex max-w-[1600px] gap-1 overflow-x-auto px-3 py-1.5 sm:px-4">
         {ITEMS.map(({ to, label, icon: Icon, ...rest }) => (
           <li key={to}>

@@ -160,9 +160,36 @@
   --radius-2xl: calc(var(--radius) + 10px);
 }
 
+/*
+ * Zonas seguras (muesca y barras del sistema) en la app móvil de Tauri.
+ * En escritorio y navegador valen 0 y no cambian nada.
+ */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  #root {
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+  }
+  /* Banda bajo la barra de estado para que el contenido no se vea detrás al desplazarse. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0 0 auto;
+    height: var(--safe-top);
+    background: var(--color-forest-800);
+    z-index: 60;
+    pointer-events: none;
   }
   html {
     -webkit-text-size-adjust: 100%;

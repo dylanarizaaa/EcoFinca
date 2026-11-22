@@ -42,7 +42,7 @@ export function Tutorial({ open, onClose }: { open: boolean; onClose: () => void
   const last = step === STEPS.length - 1
   return (
     <div
-      className="fixed right-4 bottom-4 left-4 z-40 sm:left-auto sm:w-[400px] animate-in fade-in-0 slide-in-from-bottom-4"
+      className="fixed right-4 bottom-[calc(1rem+var(--safe-bottom))] left-4 z-40 sm:left-auto sm:w-[400px] animate-in fade-in-0 slide-in-from-bottom-4"
       role="dialog"
       aria-label="Tutorial"
       data-testid="tutorial"

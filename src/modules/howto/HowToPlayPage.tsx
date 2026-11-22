@@ -13,7 +13,7 @@ const STEPS = [
   { icon: CalendarClock, title: 'Responde a los eventos', text: 'Sequías, lluvias intensas, plagas, alzas de precios u oportunidades comerciales. Tus respuestas tienen costos y consecuencias.' },
   { icon: BarChart3, title: 'Analiza y compara', text: 'En Informes verás la evolución de la finca, la evaluación por ciclo y una comparación entre producción convencional y sostenible con el mismo clima.' },
   { icon: Target, title: 'Cumple los objetivos', text: 'Al terminar la partida recibes una evaluación final. Ganas si cumples los objetivos del escenario sin una clasificación deficiente.' },
-  { icon: Save, title: 'Tu progreso se guarda', text: 'La partida se guarda automáticamente en el navegador. Puedes continuarla después de cerrar la página.' },
+  { icon: Save, title: 'Tu progreso se guarda', text: 'La partida se guarda automáticamente en este dispositivo. Puedes continuarla después de cerrar la aplicación o la página.' },
 ]
 
 const TIPS = [
