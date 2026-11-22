@@ -56,6 +56,8 @@ Todas las plataformas: **Node.js 20+** y **Rust estable** (`rustup`). Después: 
 | `npm run ios:init` | Genera el proyecto de Xcode (`src-tauri/gen/apple`), solo en macOS |
 | `npm run ios:dev` / `npm run ios:build` | Ejecuta o compila la app de iOS, solo en macOS |
 
+Los comandos `desktop:*` y `android:*` ejecutan antes `scripts/verificar-tauri.mjs`, que comprueba que estén instalados Rust (y, en Linux, WebKitGTK; en Android, el SDK, el NDK y los destinos de Rust) y explica qué instalar si falta algo.
+
 ## Firma de Android
 
 Android solo instala APK firmados. El APK de depuración se firma automáticamente con una clave de prueba. Para el APK de producción:
