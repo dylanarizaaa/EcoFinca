@@ -56,6 +56,8 @@ Todas las plataformas: **Node.js 20+** y **Rust estable** (`rustup`). Después: 
 | `npm run ios:init` | Genera el proyecto de Xcode (`src-tauri/gen/apple`), solo en macOS |
 | `npm run ios:dev` / `npm run ios:build` | Ejecuta o compila la app de iOS, solo en macOS |
 
+Los comandos `desktop:*` y `android:*` ejecutan antes `scripts/verificar-tauri.mjs`, que comprueba que estén instalados Rust (y, en Linux, WebKitGTK; en Android, el SDK, el NDK y los destinos de Rust) y explica qué instalar si falta algo.
+
 ## Firma de Android
 
 Android solo instala APK firmados. El APK de depuración se firma automáticamente con una clave de prueba. Para el APK de producción:
@@ -84,7 +86,7 @@ Para que GitHub Actions firme el APK, crea estos secretos en *Settings → Secre
 
 El flujo `.github/workflows/aplicaciones.yml` compila Windows, macOS, Linux y Android:
 
-- **Manual:** pestaña *Actions* → *Aplicaciones EcoFinca* → *Run workflow*. Los instaladores quedan como *artifacts* de la ejecución.
+- **Manual:** pestaña *Actions* → *Aplicaciones EcoFinca* → *Run workflow*. Puedes elegir compilar *todas* las plataformas, solo *escritorio* o solo *android*. Los instaladores quedan como *artifacts* de la ejecución.
 - **Versión publicada:** al crear una etiqueta `vX.Y.Z` (por ejemplo `git tag v1.0.0 && git push origin v1.0.0`) se genera un borrador de *Release* con todos los instaladores.
 
 ## Instalación
